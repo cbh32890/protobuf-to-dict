@@ -12,17 +12,17 @@ TYPE_CALLABLE_MAP = {
     FieldDescriptor.TYPE_DOUBLE: float,
     FieldDescriptor.TYPE_FLOAT: float,
     FieldDescriptor.TYPE_INT32: int,
-    FieldDescriptor.TYPE_INT64: long,
+    FieldDescriptor.TYPE_INT64: int,
     FieldDescriptor.TYPE_UINT32: int,
-    FieldDescriptor.TYPE_UINT64: long,
+    FieldDescriptor.TYPE_UINT64: int,
     FieldDescriptor.TYPE_SINT32: int,
-    FieldDescriptor.TYPE_SINT64: long,
+    FieldDescriptor.TYPE_SINT64: int,
     FieldDescriptor.TYPE_FIXED32: int,
-    FieldDescriptor.TYPE_FIXED64: long,
+    FieldDescriptor.TYPE_FIXED64: int,
     FieldDescriptor.TYPE_SFIXED32: int,
-    FieldDescriptor.TYPE_SFIXED64: long,
+    FieldDescriptor.TYPE_SFIXED64: int,
     FieldDescriptor.TYPE_BOOL: bool,
-    FieldDescriptor.TYPE_STRING: unicode,
+    FieldDescriptor.TYPE_STRING: str,
     FieldDescriptor.TYPE_BYTES: lambda b: b.encode("base64"),
     FieldDescriptor.TYPE_ENUM: int,
 }
@@ -136,7 +136,7 @@ def _dict_to_protobuf(pb, value, type_callable_map, strict):
                 if field.type == FieldDescriptor.TYPE_MESSAGE:
                     m = pb_value.add()
                     _dict_to_protobuf(m, item, type_callable_map, strict)
-                elif field.type == FieldDescriptor.TYPE_ENUM and isinstance(item, basestring):
+                elif field.type == FieldDescriptor.TYPE_ENUM and isinstance(item, str):
                     pb_value.append(_string_to_enum(field, item))
                 else:
                     pb_value.append(item)
@@ -152,7 +152,7 @@ def _dict_to_protobuf(pb, value, type_callable_map, strict):
             pb.Extensions[field] = input_value
             continue
 
-        if field.type == FieldDescriptor.TYPE_ENUM and isinstance(input_value, basestring):
+        if field.type == FieldDescriptor.TYPE_ENUM and isinstance(input_value, str):
             input_value = _string_to_enum(field, input_value)
 
         setattr(pb, field.name, input_value)
